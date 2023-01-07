@@ -15,13 +15,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
-    private final SuccessUserHandler successUserHandler;
 
 
     @Autowired
-    public WebSecurityConfig(UserDetailsService userDetailsService, SuccessUserHandler successUserHandler) {
+    public WebSecurityConfig(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
-        this.successUserHandler = successUserHandler;
     }
 
     @Override
@@ -29,13 +27,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .cors().and().csrf().disable()
                 .authorizeRequests()
-//                .antMatchers("/api/**").permitAll()
-                    .antMatchers("/admin/**").hasRole("ADMIN")
-                    .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
                     .anyRequest().authenticated()
                 .and()
-                    .formLogin().loginPage("/login").usernameParameter("email")
-                    .successHandler(successUserHandler)
+                    .formLogin().loginPage("/login").usernameParameter("email").defaultSuccessUrl("/main")
                     .permitAll()
                 .and()
                     .logout()

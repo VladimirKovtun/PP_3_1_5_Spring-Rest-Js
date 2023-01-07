@@ -69,6 +69,7 @@ public class User implements UserDetails {
     public void toUser(User userUpdate) {
         this.setFirstName((userUpdate.getFirstName()));
         this.setLastName((userUpdate.getLastName()));
+        this.setPassword(userUpdate.getPassword() == null || userUpdate.getPassword().isEmpty() ? this.getPassword() : userUpdate.getPassword());
         this.setAge((userUpdate.getAge()));
         this.setEmail((userUpdate.getEmail()));
         this.setRoles((userUpdate.getRoles()));

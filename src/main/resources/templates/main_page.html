@@ -12,10 +12,13 @@
   <!--navbar-->
     <nav class="navbar navbar-expand-lg bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand text-light"  href="#" >[[${#httpServletRequest.remoteUser}]] with roles: <strong
-                    th:each="authority : ${#authentication.getAuthorities()}"
-                    th:if="${authority.getAuthority().startsWith('ROLE_')}"
-                    th:text="${authority.getAuthority().replaceFirst('ROLE_', '').concat(' ')}"></strong>  </a>
+            <a class="navbar-brand text-light"  href="#">
+                <span class="fw-bold" sec:authentication="name"></span>
+                <span class="fst-italic">with roles: </span>
+                <span class="fw-bold" th:each="authority, iterStat:${#authentication.getAuthorities()}"
+                      th:text="${authority.getAuthority().replaceFirst('ROLE_', '') + (iterStat.last?'':', ')}">
+                </span>
+            </a>
             <div class="m-2 navbar-text">
                 <form th:action="@{/logout}" method="post">
                     <input type="submit" class="btn btn-dark btn-sm" value="Logout">
@@ -26,28 +29,28 @@
     </nav>
   <!--pills-->
     <div class="container-fluid">
-        <div class="row pt-3">
+        <div class="row pt-3" th:with="isAdmin=${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
             <div class="col-2 px-0">
                 <ul class="nav nav-fill nav-pills flex-column" id="pills-tab" role="tablist">
-                    <li class="nav-item border border-primary rounded"  role="presentation">
+                    <li class="nav-item border border-primary rounded"  role="presentation" th:if="${isAdmin}">
                         <a class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" href="#pills-home"
                            role="tab" style="text-align: left">Admin</a>
                     </li>
                     <li class="nav-item border border-primary rounded" role="presentation">
                         <a class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" href="#pills-profile"
-                           role="tab" style="text-align: left" >User</a>
+                           role="tab" style="text-align: left" th:classappend="${!isAdmin}?'active'">User</a>
                     </li>
                 </ul>
             </div>
          <!--pills content-->
             <div class="col tab-content bg-light px-4 vh-100" id="pills-tabContent">
                 <!--admin panel-->
-                <div class="tab-pane fade show active" id="pills-home" role="tabpanel">
+                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" th:if="${isAdmin}">
                     <h1>Admin Panel</h1>
                   <!--tabs-->
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home" role="tab">User table</a>
+                            <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home" role="tab">User's table</a>
                         </li>
                         <li class="nav-item" role="presentation">
                             <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#profile" role="tab">New User</a>
@@ -58,7 +61,7 @@
                         <div class="tab-pane fade show active" id="home" role="tabpanel">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4>About user</h4>
+                                    <h4>All user's</h4>
                                 </div>
                                 <div class="card-body">
                                     <table class="table table-striped">
@@ -144,7 +147,7 @@
                     </div>
                 </div>
                 <!--userinfo-->
-                <div class="tab-pane fade show" id="pills-profile" role="tabpanel">
+                <div class="tab-pane fade show" id="pills-profile" role="tabpanel" th:classappend="${!isAdmin}?'active'">
                     <h1>User information-page</h1>
                     <div class="card">
                         <div class="card-header">
@@ -174,7 +177,7 @@
             <!--end pills content-->
         </div>
     </div>
-
+  <!--start edit modal-->
   <div class="modal fade" id="editModal" tabindex="-1" role="dialog"
        aria-labelledby="editTitle" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -225,7 +228,7 @@
                           <div class="form-group">
                               <label class="col-form-label" for="passwordEditModal"><strong>Password</strong></label>
                               <div>
-                                  <input id="passwordEditModal" type="password" class="form-control"/>
+                                  <input id="passwordEditModal" type="password"/>
                               </div>
                           </div>
                           <br>
@@ -243,6 +246,8 @@
           </div>
       </div>
   </div>
+  <!--end edit modal-->
+  <!--start delete modal-->
   <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog"
        aria-labelledby="deleteTitle" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -311,10 +316,10 @@
           </div>
       </div>
   </div>
+  <!--end delete modal-->
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
           integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
           crossorigin="anonymous"></script>
-  <script src="/js/user.js" type="text/javascript"></script>
-  <script src="/js/admin.js" type="text/javascript"></script>
+  <script src="/js/main.js" type="text/javascript"></script>
 </body>
 </html>

@@ -1,7 +1,5 @@
 package ru.kata.dto;
 
-
-
 import ru.kata.entities.Role;
 import ru.kata.entities.User;
 
@@ -29,6 +27,7 @@ public class UserDto {
         userDto.setId(user.getId());
         userDto.setFirstName(user.getFirstName());
         userDto.setLastName(user.getLastName());
+        userDto.setPassword(user.getPassword());
         userDto.setAge(user.getAge());
         userDto.setEmail(user.getEmail());
         userDto.setRoles(user.getRoles());

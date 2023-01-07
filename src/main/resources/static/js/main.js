@@ -21,6 +21,28 @@ fetch('/api/v1/users').then(
         )
     }
 )
+//создание таблицы с текущим пользователем
+fetch('/api/v1/users/user').then(
+    res => {
+        res.json().then(
+            data => {
+                console.log(data)
+                let temp = "";
+                temp += "<td>" + data.id + "</td>";
+                temp += "<td>" + data.firstName + "</td>";
+                temp += "<td>" + data.lastName + "</td>";
+                temp += "<td>" + data.age + "</td>";
+                temp += "<td>" + data.email + "</td>";
+                let rolesStr = "<td>";
+                data.roles.forEach(r => {
+                    rolesStr += r.name.replace("ROLE_", "") + ", ";
+                })
+                temp += rolesStr.substring(0, rolesStr.length - 2) + "</td>" + "</tr>";
+                document.getElementById("tableUserBody").innerHTML = temp;
+            }
+        )
+    }
+)
 //создание таблицы пользователей
 function createTable(data) {
     let temp = "";
@@ -33,9 +55,9 @@ function createTable(data) {
         temp += "<td>" + u.email + "</td>";
         let rolesStr = "<td>";
         u.roles.forEach(r => {
-            rolesStr += r.name.replace("ROLE_", "") + " ";
+            rolesStr += r.name.replace("ROLE_", "") + ", ";
         })
-        temp += rolesStr + "</td>";
+        temp += rolesStr.substring(0, rolesStr.length - 2) + "</td>";
         temp += "<td><button class=\"btn btn-info\" onclick=\"fEdit(this)\" id=\"editBtn" + u.id + "\">Edit</button></td>";
         temp += "<td><button class=\"btn btn-danger\" onclick=\"fDel(this)\" id=\"deleteBtn" + u.id + "\">Delete</button></td>" + "</tr>";
     })
