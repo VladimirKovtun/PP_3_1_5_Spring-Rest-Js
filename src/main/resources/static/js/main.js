@@ -131,7 +131,7 @@ $('#addUserBtn').click(function () {
 function getUserById(id) {
     let t = null;
     allUsers.forEach(u => {
-        if (u.id === id) {
+        if (u.id == id) {
             t = u;
         }
     })

@@ -46,6 +46,15 @@ public class UserDto {
         return user;
     }
 
+    public static User toUpdateUser(User byId, UserDto userDto) {
+        byId.setFirstName((userDto.getFirstName()));
+        byId.setLastName((userDto.getLastName()));
+        byId.setAge((userDto.getAge()));
+        byId.setEmail((userDto.getEmail()));
+        byId.setRoles((userDto.getRoles()));
+        return byId;
+    }
+
     public Long getId() {
         return id;
     }

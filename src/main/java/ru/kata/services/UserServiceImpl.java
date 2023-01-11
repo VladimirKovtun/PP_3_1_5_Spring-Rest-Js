@@ -7,11 +7,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import ru.kata.dto.UserDto;
 import ru.kata.entities.User;
 import ru.kata.repositories.RoleRepository;
 import ru.kata.repositories.UserRepository;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -52,12 +54,13 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public User editUser(Long id, User user) {
+    public User editUser(Long id, UserDto userDto) {
         User byId = getUser(id);
-        byId.toUser(user);
-        byId.setPassword(passwordEncoder.encode(byId.getPassword()));
-        userRepository.save(byId);
-        return byId;
+        User userUpdate = UserDto.toUpdateUser(byId, userDto);
+        userUpdate.setPassword(Objects.equals(userDto.getPassword(), byId.getPassword()) ||
+                userDto.getPassword() == null || userDto.getPassword().isEmpty() ? byId.getPassword() : passwordEncoder.encode(userDto.getPassword()));
+        userRepository.save(userUpdate);
+        return userUpdate;
     }
 
     @Transactional

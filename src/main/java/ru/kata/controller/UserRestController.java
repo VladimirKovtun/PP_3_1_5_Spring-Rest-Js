@@ -51,7 +51,7 @@ public class UserRestController {
 
     @PutMapping("/{id}/edit")
     public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long id, @RequestBody UserDto user) {
-        return new ResponseEntity<>(UserDto.toDto(userService.editUser(id, UserDto.toUser(user))), HttpStatus.OK);
+        return new ResponseEntity<>(UserDto.toDto(userService.editUser(id, user)), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}/delete")

@@ -1,9 +1,9 @@
 package ru.kata.services;
 
+import ru.kata.dto.UserDto;
 import ru.kata.entities.User;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface UserService {
     User addUser(User user);
@@ -12,7 +12,7 @@ public interface UserService {
 
     User getUser(Long id);
 
-    User editUser(Long id, User user);
+    User editUser(Long id, UserDto user);
 
     void removeUser(Long id);
 
